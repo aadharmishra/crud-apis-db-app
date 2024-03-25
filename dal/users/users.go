@@ -36,7 +36,7 @@ func (u *User) IsUserAvailable(ctx context.Context, id int) (bool, error) {
 
 	query := `SELECT * FROM users WHERE id = $1`
 
-	rows, err := u.Deps.Database.Db.Read(ctx, query, id)
+	rows, err := u.Deps.Database.PostgresDb.Read(ctx, query, id)
 	if err != nil {
 		fmt.Print("error", map[string]interface{}{"error": err})
 		return false, err
@@ -52,7 +52,7 @@ func (u *User) IsUserAvailable(ctx context.Context, id int) (bool, error) {
 // InsertUser implements UsersDal.
 func (u *User) InsertUser(ctx context.Context, user *models.User) error {
 	query := `INSERT INTO users (id, username, email, age, isadmin, lastlogin, preferences) VALUES ($1, $2, $3, $4, $5, $6, $7)`
-	err := u.Deps.Database.Db.Create(ctx, query, user.ID, user.Username, user.Email, user.Age, user.IsAdmin, time.Now(), user.Preferences)
+	err := u.Deps.Database.PostgresDb.Create(ctx, query, user.ID, user.Username, user.Email, user.Age, user.IsAdmin, time.Now(), user.Preferences)
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (u *User) InsertUser(ctx context.Context, user *models.User) error {
 func (u *User) SelectUsersById(ctx context.Context, id int) (models.User, error) {
 	query := `SELECT * FROM users WHERE id = $1`
 
-	rows, err := u.Deps.Database.Db.Read(ctx, query, id)
+	rows, err := u.Deps.Database.PostgresDb.Read(ctx, query, id)
 	if err != nil {
 		return models.User{}, err
 	}
@@ -83,7 +83,7 @@ func (u *User) SelectUsersById(ctx context.Context, id int) (models.User, error)
 func (u *User) SelectUsers(ctx context.Context) ([]models.User, error) {
 	query := `SELECT * FROM users`
 
-	rows, err := u.Deps.Database.Db.Read(ctx, query)
+	rows, err := u.Deps.Database.PostgresDb.Read(ctx, query)
 	if err != nil {
 		return []models.User{}, err
 	}
@@ -102,7 +102,7 @@ func (u *User) SelectUsers(ctx context.Context) ([]models.User, error) {
 // UpdateUserById implements UsersDal.
 func (u *User) UpdateUserById(ctx context.Context, user *models.User) (models.User, error) {
 	query := `UPDATE users SET username = $2, email = $3, age = $4, isadmin = $5, lastlogin = $6, preferences = $7 WHERE id = $1`
-	err := u.Deps.Database.Db.Update(ctx, query, user.ID, user.Username, user.Email, user.Age, user.IsAdmin, time.Now(), user.Preferences)
+	err := u.Deps.Database.PostgresDb.Update(ctx, query, user.ID, user.Username, user.Email, user.Age, user.IsAdmin, time.Now(), user.Preferences)
 	if err != nil {
 		return models.User{}, err
 	}
@@ -118,7 +118,7 @@ func (u *User) UpdateUserById(ctx context.Context, user *models.User) (models.Us
 // DeleteUserById implements UsersDal.
 func (u *User) DeleteUserById(ctx context.Context, id int) (bool, error) {
 	query := `DELETE FROM users WHERE id = $1`
-	err := u.Deps.Database.Db.Delete(ctx, query, id)
+	err := u.Deps.Database.PostgresDb.Delete(ctx, query, id)
 	if err != nil {
 		return false, err
 	}

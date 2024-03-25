@@ -28,7 +28,7 @@ func initialize() (IConfig, error) {
 	var err error
 	var data []byte
 
-	configFile := "config.json"
+	configFile := "/Users/aadharmishra/Documents/github/crud-apis-db-app/config/config.json"
 
 	data, err = os.ReadFile(configFile)
 	if err != nil || data == nil {
