@@ -12,7 +12,7 @@ func NewUsersRouter(router *gin.Engine, deps *shared.Deps) {
 
 func bindRoutes(router *gin.Engine, deps *shared.Deps) {
 	service := NewUsersService(deps)
-	routerApi := router.Group("/users/")
+	routerApi := router.Group("/users")
 	{
 		routerApi.POST("/create", service.CreateUser)
 		routerApi.GET("/get", service.GetAllUsers)

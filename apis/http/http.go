@@ -4,6 +4,7 @@ import (
 	"crud-apis-db-app/shared"
 	"fmt"
 
+	"crud-apis-db-app/apis/http/employees"
 	"crud-apis-db-app/apis/http/users"
 
 	"github.com/gin-contrib/cors"
@@ -23,8 +24,9 @@ func StartServer(deps *shared.Deps) error {
 	router.Use(cors.New(corsConfig))
 	fmt.Printf("HTTP Server listening on : " + address)
 
-	//register the route
+	//register the routes
 	users.NewUsersRouter(router, deps)
+	employees.NewEmployeesRouter(router, deps)
 
 	// Start the server
 	err := router.Run(address)
