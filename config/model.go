@@ -12,6 +12,7 @@ type Config struct {
 	Server   Server   `json:"server"`
 	Postgres Postgres `json:"postgres"`
 	Mongodb  Mongodb  `json:"mongodb"`
+	Redis    Redis    `json:"redis"`
 }
 
 type Server struct {
@@ -43,4 +44,11 @@ type Mongodb struct {
 	AuthSource  string   `json:"authSource"`
 	MinPoolSize uint64   `json:"minPoolSize"`
 	MaxPoolSize uint64   `json:"maxPoolSize"`
+}
+
+type Redis struct {
+	Database string `json:"database"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Address  string `json:"address"`
 }

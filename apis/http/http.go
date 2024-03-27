@@ -4,6 +4,7 @@ import (
 	"crud-apis-db-app/shared"
 	"fmt"
 
+	"crud-apis-db-app/apis/http/departments"
 	"crud-apis-db-app/apis/http/employees"
 	"crud-apis-db-app/apis/http/users"
 
@@ -27,6 +28,7 @@ func StartServer(deps *shared.Deps) error {
 	//register the routes
 	users.NewUsersRouter(router, deps)
 	employees.NewEmployeesRouter(router, deps)
+	departments.NewDepartmentsRouter(router, deps)
 
 	// Start the server
 	err := router.Run(address)
