@@ -6,6 +6,7 @@ import (
 
 	"crud-apis-db-app/apis/http/departments"
 	"crud-apis-db-app/apis/http/employees"
+	oauth "crud-apis-db-app/apis/http/oAuth"
 	"crud-apis-db-app/apis/http/users"
 
 	"github.com/gin-contrib/cors"
@@ -29,6 +30,7 @@ func StartServer(deps *shared.Deps) error {
 	users.NewUsersRouter(router, deps)
 	employees.NewEmployeesRouter(router, deps)
 	departments.NewDepartmentsRouter(router, deps)
+	oauth.NewOAuthRouter(router, deps)
 
 	// Start the server
 	err := router.Run(address)
