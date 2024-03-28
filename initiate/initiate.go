@@ -2,6 +2,7 @@ package initiate
 
 import (
 	"crud-apis-db-app/apis"
+	"crud-apis-db-app/clients"
 	"crud-apis-db-app/config"
 	db "crud-apis-db-app/dal"
 	"crud-apis-db-app/shared"
@@ -20,10 +21,17 @@ func Initiate() error {
 		return err
 	}
 
+	//initializes client configs
+	clientCfgInstances, err := clients.NewClientCfgInstances(cfg)
+	if err != nil {
+		return err
+	}
+
 	// loads all common dependencies
 	dependencies := shared.Deps{
-		Config:   cfg,
-		Database: dbInstances,
+		Config:        cfg,
+		Database:      dbInstances,
+		ClientConfigs: clientCfgInstances,
 	}
 
 	// Initializes servers
