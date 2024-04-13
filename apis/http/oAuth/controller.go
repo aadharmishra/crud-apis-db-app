@@ -38,3 +38,23 @@ func (o *OAuthService) Callback(ctx *gin.Context) {
 	}
 	ctx.JSON(statusCode, res)
 }
+
+func (o *OAuthService) YoutubeSearch(ctx *gin.Context) {
+	var err error
+	statusCode, res, err := o.oauth.YoutubeSearchData(ctx)
+	if err != nil || res == nil || statusCode != http.StatusOK {
+		ctx.JSON(statusCode, map[string]interface{}{"error": "internal error"})
+		return
+	}
+	ctx.JSON(statusCode, res)
+}
+
+func (o *OAuthService) CreateDriveFile(ctx *gin.Context) {
+	var err error
+	statusCode, res, err := o.oauth.CreateNewMultipartDriveFile(ctx)
+	if err != nil || res == nil || statusCode != http.StatusOK {
+		ctx.JSON(statusCode, map[string]interface{}{"error": "internal error"})
+		return
+	}
+	ctx.JSON(statusCode, res)
+}

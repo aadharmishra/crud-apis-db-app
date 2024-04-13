@@ -72,5 +72,7 @@ type Web struct {
 }
 
 type Google struct {
-	UserInfoUrl string `json:"userInfoUrl"`
+	UserInfoUrl          string `json:"userInfoUrl"`
+	YoutubeSearchUrl     string `json:"youtubeSearchUrl"`
+	GoogleDriveUploadUrl string `json:"googleDriveUploadUrl"`
 }
