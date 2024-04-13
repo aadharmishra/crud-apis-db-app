@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"strings"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -15,6 +16,8 @@ type IOAuthCfg interface {
 	GetAuthCodeURL(ctx context.Context) (string, error)
 	GetToken(ctx context.Context, code string) (string, error)
 	UserInfo(ctx context.Context, url string, token string) (string, error)
+	YoutubeSearch(ctx context.Context, url string, token string, queryParams string) (string, error)
+	UploadToGoogleDrive(ctx context.Context, url string, token string, queryParams string, body string) (string, error)
 }
 
 type GoogleOAuthClientCfg struct {
@@ -89,4 +92,50 @@ func (g *GoogleOAuthClientCfg) UserInfo(ctx context.Context, url string, token s
 	}
 
 	return string(data), nil
+}
+
+func (g *GoogleOAuthClientCfg) YoutubeSearch(ctx context.Context, url string, token string, queryParams string) (string, error) {
+	finalUrl := url + token + queryParams
+	res, err := http.Get(finalUrl)
+	if err != nil {
+		return "", err
+	}
+
+	if res == nil {
+		return "", errors.New("invalid response")
+	}
+
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+
+	if data == nil {
+		return "", errors.New("invalid response")
+	}
+
+	return string(data), nil
+}
+
+func (g *GoogleOAuthClientCfg) UploadToGoogleDrive(ctx context.Context, url string, token string, queryParams string, body string) (string, error) {
+
+	finalUrl := url + token + queryParams
+	req, err := http.NewRequest("POST", finalUrl, strings.NewReader(body))
+	if err != nil {
+		return "", err
+	}
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+
+	resBody, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(resBody), nil
 }

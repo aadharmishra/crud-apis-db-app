@@ -12,9 +12,14 @@ func NewOAuthRouter(router *gin.Engine, deps *shared.Deps) {
 
 func bindRoutes(router *gin.Engine, deps *shared.Deps) {
 	service := NewOAuthService(deps)
-	routerApi := router.Group("/google")
+	oAuthRouterGrp := router.Group("/google")
 	{
-		routerApi.GET("/login", service.Login)
-		routerApi.GET("/callback", service.Callback)
+		oAuthRouterGrp.GET("/login", service.Login)
+		oAuthRouterGrp.GET("/callback", service.Callback)
+		oAuthRouterGrp.POST("/drive/files/create", service.CreateDriveFile)
+	}
+	youtubeRouterGrp := router.Group("/youtube")
+	{
+		youtubeRouterGrp.GET("/search", service.YoutubeSearch)
 	}
 }
